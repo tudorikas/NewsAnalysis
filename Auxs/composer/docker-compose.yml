@@ -1,0 +1,52 @@
+version: '3'
+
+networks:
+  localdev:
+    driver: bridge
+
+services:
+    ner:
+        image: tudorikas/ner
+        restart: always
+        container_name: ner
+        ports:
+        - "5005:5005"
+        networks:
+            - localdev
+    sentiment:
+        image: tudorikas/sentiment
+        restart: always
+        container_name: sentiment
+        ports:
+        - "5006:5006"
+        networks:
+            - localdev
+    summarize:
+        image: tudorikas/summarizer
+        restart: always
+        container_name: summarize
+        ports:
+        - "5007:5007"
+        networks:
+            - localdev
+    reddit:
+        image: tudorikas/reddit
+        restart: always
+        volumes:
+            - F:\\Projects\\News2\\NewsAgreggator\\News\\Reddit\\Folder:/Folder
+    sites:
+        image: tudorikas/sites
+        restart: always
+        volumes:
+            - F:\\Projects\\News2\\NewsAgreggator\\News\\Siteuri\\Folder:/Folder
+    
+    mainnews:
+        image: tudorikas/mainnews
+        restart: always
+        networks:
+            - localdev
+        volumes:
+            - F:\\Projects\\News2\\NewsAgreggator\\News\\SummarizeNews-main\\Folder:/Folder
+volumes:
+    data01:
+        driver: local
